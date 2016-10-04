@@ -1,4 +1,5 @@
-
+__author__ = "Nathaniel Cotton"
+__email__ = "nec2887@rit.edu"
 
 class NetworkUtil:
 
@@ -11,4 +12,3 @@ class NetworkUtil:
     def recv(self):
         pass
 
-    
