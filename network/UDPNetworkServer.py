@@ -1,7 +1,7 @@
 import socket
 import sys
 
-HOST = '127.0.0.1'
+HOST = '192.168.1.121'
 PORT = 5005
 
 try :
