@@ -1,7 +1,7 @@
 import socket
 import sys
 
-HOST = '192.168.1.121'
+HOST = '192.168.1.121' # this is the IP for my computer, we can change it if we want another computer to be the server
 PORT = 5005
 
 try :
