@@ -23,7 +23,7 @@ print 'Socket bind complete'
 
 #now keep talking with the client
 while 1:
-    # receive data from client (data, addr)
+    # receive dat from client (data, addr)
     data, addr = s.recvfrom(1024)
     if not data:
         break
