@@ -8,7 +8,7 @@ except socket.error:
     print 'Failed to create socket'
     sys.exit()
 
-host = 'localhost';
+host = '192.168.1.121'; # this is the internet host name with a static pc, we can change it to be another pc 
 port = 5005;
 
 while(1) :
@@ -18,7 +18,7 @@ while(1) :
         #Set the whole string
         s.sendto(msg, (host, port))
         
-        # receve data from client (data, addr)
+        # receive data from client (data, addr)
         d = s.recvfrom(1024)
         reply = d[0]
         addr = d[1]
