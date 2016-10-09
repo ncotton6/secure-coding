@@ -6,7 +6,7 @@ __author__ = "Nathaniel Cotton"
 __email__ = "nec2887@rit.edu"
 
 
-def send(self, info):
+def send(info):
     """
     Sends data
     :param info:
@@ -15,7 +15,7 @@ def send(self, info):
     pass
 
 
-def recv(self):
+def recv():
     """
     Receives data
     :return:

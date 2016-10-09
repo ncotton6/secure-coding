@@ -32,3 +32,9 @@ class WindowsKeyLogger(threading.Thread):
 
     def getQueue(self):
         return []
+
+    def hasInfoToSend(self):
+        return False
+
+    def getInfo(self):
+        return ''
