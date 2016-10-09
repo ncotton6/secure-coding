@@ -6,20 +6,20 @@ PORT = 5005
 
 try :
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    print 'Socket created'
-except socket.error, msg :
-    print 'Failed to create socket. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
+    print('Socket created')
+except socket.error as msg :
+    print("Failed to create socket. Error Code : " + str(msg[0]) + ' Message ' + msg[1])
     sys.exit()
 
 
 
 try:
     s.bind((HOST, PORT))
-except socket.error , msg:
-    print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
+except socket.error as msg:
+    print('Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
     sys.exit()
 
-print 'Socket bind complete'
+print('Socket bind complete')
 
 #now keep talking with the client
 while 1:
@@ -27,10 +27,10 @@ while 1:
     data, addr = s.recvfrom(1024)
     if not data:
         break
-    print "client send : ", data
-    reply = raw_input('Enter message to reply :')
+    print("client send : ", data)
+    reply = input('Enter message to reply :')
 
     s.sendto(reply , addr)
-    print 'Message[' + addr[0] + ':' + str(addr[1]) + '] - ' + data.strip()
+    print('Message[' + addr[0] + ':' + str(addr[1]) + '] - ' + data.strip())
 
 s.close()
