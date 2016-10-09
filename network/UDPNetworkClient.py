@@ -8,8 +8,8 @@ except socket.error:
     print('Failed to create socket')
     sys.exit()
 
-host = 'localhost'; # this is the internet host name with a static pc, we can change it to be another pc
-port = 5005;
+host = 'localhost' # this is the internet host name with a static pc, we can change it to be another pc
+port = 5005
 
 while 1:
     msg = input('Enter message to send : ')
