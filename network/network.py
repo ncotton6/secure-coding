@@ -46,7 +46,7 @@ def recv():
     :return:
     """
     reply, addr = NetUtil().socket.recvfrom(1024)
-    return (reply,addr)
+    return reply
 
 
 def getSendTo():

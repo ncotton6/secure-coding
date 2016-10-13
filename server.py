@@ -4,6 +4,8 @@ import time
 import datetime
 
 
+__author__ = 'Nathaniel Cotton, Zhao Hongyu'
+
 class Network:
     def __init__(self, port):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
