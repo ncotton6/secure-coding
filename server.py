@@ -10,8 +10,8 @@ import zlib
 #open(name, 'a')
 # here is for create the file
 
-# with io.FileIO("foobar.txt", "w") as file:
-#        file.write("Hello!")
+# with io.FileIO("name", "w") as file:
+#        file.write("data")
 # here is for write the file 
 __author__ = 'Nathaniel Cotton, Zhao Hongyu'
 
