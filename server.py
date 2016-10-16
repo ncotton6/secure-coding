@@ -24,7 +24,8 @@ class Recv(threading.Thread):
     def run(self):
         while True:
             data, addr = self.network.socket.recvfrom(1024)
-            self.addr = zlib.compress(addr)
+            self.addr = addr
+            data = zlib.compress(data)
             self.lastRecvTime = datetime.datetime.now()
             print(data)
 
