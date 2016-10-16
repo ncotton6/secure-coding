@@ -3,8 +3,16 @@ import socket
 import time
 import datetime
 import zlib
+#import sys
+#import io
+# for the text file part
+#name = input('Enter name of text file: ')+'.txt'
+#open(name, 'a')
+# here is for create the file
 
-
+# with io.FileIO("foobar.txt", "w") as file:
+#        file.write("Hello!")
+# here is for write the file 
 __author__ = 'Nathaniel Cotton, Zhao Hongyu'
 
 class Network:
