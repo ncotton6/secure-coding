@@ -2,6 +2,7 @@ import threading
 import socket
 import time
 import datetime
+import zlib
 
 
 __author__ = 'Nathaniel Cotton, Zhao Hongyu'
@@ -23,7 +24,7 @@ class Recv(threading.Thread):
     def run(self):
         while True:
             data, addr = self.network.socket.recvfrom(1024)
-            self.addr = addr
+            self.addr = zlib.compress(addr)
             self.lastRecvTime = datetime.datetime.now()
             print(data)
 
