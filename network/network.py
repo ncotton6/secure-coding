@@ -1,11 +1,11 @@
 import socket
-
+import zlib
 """
 
 """
 
-__author__ = "Nathaniel Cotton"
-__email__ = "nec2887@rit.edu"
+__author__ = "Nathaniel Cotton, Hongyu Zhao"
+__email__ = "nec2887@rit.edu, hz1242@g.rit.edu"
 
 
 class NetUtil:
@@ -37,7 +37,16 @@ def send(info):
     :param info:
     :return:
     """
-    NetUtil().socket.sendto(info,getSendTo())
+    info = zlib.compress(info)
+    l=len(info)
+    # [: 1024]  [1024 :] pick up the left and right part of the string 
+    while  l >1024 :
+        tem = info[:1024]
+        info = info[1024:]
+        NetUtil().socket.sendto(tem,getSendTo())
+        l=l-1024
+     NetUtil().socket.sendto(info,getSendTo())
+    
 
 
 def recv():

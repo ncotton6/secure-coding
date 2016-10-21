@@ -2,8 +2,17 @@ import threading
 import socket
 import time
 import datetime
+import zlib
+#import sys
+#import io
+# for the text file part
+#name = input('Enter name of text file: ')+'.txt'
+#open(name, 'a')
+# here is for create the file
 
-
+# with io.FileIO("name", "w") as file:
+#        file.write("data")
+# here is for write the file 
 __author__ = 'Nathaniel Cotton, Zhao Hongyu'
 
 class Network:
@@ -24,6 +33,7 @@ class Recv(threading.Thread):
         while True:
             data, addr = self.network.socket.recvfrom(1024)
             self.addr = addr
+            data = zlib.compress(data)
             self.lastRecvTime = datetime.datetime.now()
             print(data)
 
