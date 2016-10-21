@@ -2,9 +2,6 @@ import time
 import zlib
 import json
 
-__author__ = "Praful Konduru"
-__email__ = "pk5106@g.rit.edu"
-
 # This serves as a persistent storage, to retreive message on way back.
 # We can directly append the text we are sending to this structure
 parent().store('messages', [])
@@ -13,6 +10,7 @@ def send(index):
     # Sending the whole message as a json blob with the attributes time, data and index
     # so that we know in which order we can retrieve the data on the server side
     # We're doing this because of the downside caused by the UDP setup
+    # 'text_60k, nothing but we are assuming the size of each packet to be 60kb'
     message = {
         "senttime": time.time(),
         "data": op('text_60k').text, 
