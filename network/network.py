@@ -1,5 +1,6 @@
 import socket
 import zlib
+
 """
 
 """
@@ -38,15 +39,11 @@ def send(info):
     :return:
     """
     info = zlib.compress(info)
-    l=len(info)
-    # [: 1024]  [1024 :] pick up the left and right part of the string 
-    while  l >1024 :
+    while len(info) > 1024:
         tem = info[:1024]
         info = info[1024:]
-        NetUtil().socket.sendto(tem,getSendTo())
-        l=l-1024
-     NetUtil().socket.sendto(info,getSendTo())
-    
+        NetUtil().socket.sendto(tem, getSendTo())
+    NetUtil().socket.sendto(info, getSendTo())
 
 
 def recv():

