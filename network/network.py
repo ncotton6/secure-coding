@@ -58,4 +58,4 @@ def recv():
 
 
 def getSendTo():
-    return ('localhost', 5055)
+    return ('localhost', 5055) #use ifconfig to get the current ipv4 address then use that for our target address no localhost 
