@@ -18,7 +18,8 @@ __author__ = 'Nathaniel Cotton, Zhao Hongyu'
 class Network:
     def __init__(self, port):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.socket.bind(('localhost',port))
+        
+        self.socket.bind((socket.gethostbyname('0.0.0.0'),port))
 
 
 class Recv(threading.Thread):

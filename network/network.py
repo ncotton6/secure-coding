@@ -38,11 +38,13 @@ def send(info):
     :param info:
     :return:
     """
-    info = zlib.compress(info)
+    
     while len(info) > 1024:
         tem = info[:1024]
+        tem = zlib.compress(tem)
         info = info[1024:]
         NetUtil().socket.sendto(tem, getSendTo())
+    info = zlib.compress(info)
     NetUtil().socket.sendto(info, getSendTo())
 
 
@@ -56,4 +58,4 @@ def recv():
 
 
 def getSendTo():
-    return ('localhost', 5055)
+    return ('localhost', 5055) #use ifconfig to get the current ipv4 address then use that for our target address no localhost 
