@@ -3,6 +3,7 @@ import socket
 import time
 import datetime
 import zlib
+import json
 #import sys
 #import io
 # for the text file part
@@ -35,6 +36,10 @@ class Recv(threading.Thread):
     def run(self):
         while True:
             data, addr = self.network.socket.recvfrom(1024)
+            data = zlib.decompress(data)
+            data = data.decode('UTF-8')
+            data = json.loads(data)
+            print(data)
             if addr not in cache:
                 cache[addr] = {
                     "lastRecv": datetime.datetime.now(),
