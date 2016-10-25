@@ -15,6 +15,8 @@ import zlib
 # here is for write the file 
 __author__ = 'Nathaniel Cotton, Zhao Hongyu'
 
+cache = {}
+
 class Network:
     def __init__(self, port):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -33,25 +35,46 @@ class Recv(threading.Thread):
     def run(self):
         while True:
             data, addr = self.network.socket.recvfrom(1024)
-            self.addr = addr
-            data = zlib.compress(data)
-            self.lastRecvTime = datetime.datetime.now()
-            print(data)
+            if addr not in cache:
+                cache[addr] = {
+                    "lastRecv": datetime.datetime.now(),
+                    "messageQueue": []
+                }
+            else:
+                cache[addr]["lastRecv"] = datetime.datetime.now()
+                cache[addr]["messageQueue"].append(data)
+            #self.addr = addr
+            #data = zlib.decompress(data)
+            #self.lastRecvTime = datetime.datetime.now()
+            #print(data)
 
-    def getClient(self):
-        while self.addr is None:
-            time.sleep(0)
-        return self.addr  # ( IP, PORT )
+    def getClients(self):
+        self.purge()
+        ret = []
+        for key, item in cache.items():
+            ret.append(key)
+        return ret
 
-    def getLastRecvTime(self):
-        return self.lastRecvTime
+    def purge(self):
+        currentTime = datetime.datetime.now()
+        toPurge = []
+        for key, value in cache.items():
+            lastRecv = value["lastRecv"]
+            if (currentTime - lastRecv).total_seconds() > getTimeout():
+                toPurge.append(key)
+        for key in toPurge:
+            cache.pop(key)
 
-    def clientIsDead(self):
-        return True
+
 
 
 def getTimeout():
     return 60
+
+
+def printClients(clientList):
+    for index in range(len(clientList)):
+        print('{} : {}'.format(index+1,clientList[index]))
 
 
 def main():
@@ -59,11 +82,17 @@ def main():
     network = Network(port)
     recv = Recv(network)
     recv.start()
-    client_ip, client_port = recv.getClient()
-    while recv.clientIsDead() and recv.getLastRecvTime() is not None and (
-        datetime.datetime.now() - recv.getLastRecvTime()).total_seconds() < getTimeout():
-        command = input('Command: ')
-        network.socket.sendto(command.encode('UTF-8'), (client_ip, client_port))
+    while True:
+        clientList = recv.getClients()
+        if len(clientList) == 0:
+            print('No Clients')
+            time.sleep(5)
+        else:
+            printClients(clientList)
+            clientId = int(input("Client: "))
+            command = input("Command: ")
+            network.socket.sendto(command.encode('UTF-8'),clientList[clientId-1])
+
 
 
 if __name__ == '__main__':

