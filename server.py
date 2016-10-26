@@ -24,6 +24,18 @@ class Network:
         
         self.socket.bind((socket.gethostbyname('0.0.0.0'),port))
 
+class ProcessingThread(threading.Thread):
+
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        while True:
+            for key, value in cache.items():
+                pass
+            time.sleep(1)
+
+
 
 class Recv(threading.Thread):
     def __init__(self, network):
@@ -39,11 +51,11 @@ class Recv(threading.Thread):
             data = zlib.decompress(data)
             data = data.decode('UTF-8')
             data = json.loads(data)
-            print(data)
+            #print(data)
             if addr not in cache:
                 cache[addr] = {
                     "lastRecv": datetime.datetime.now(),
-                    "messageQueue": []
+                    "messageQueue": [data]
                 }
             else:
                 cache[addr]["lastRecv"] = datetime.datetime.now()
@@ -87,16 +99,23 @@ def main():
     network = Network(port)
     recv = Recv(network)
     recv.start()
+    proc = ProcessingThread()
+    proc.start()
     while True:
-        clientList = recv.getClients()
-        if len(clientList) == 0:
-            print('No Clients')
-            time.sleep(5)
-        else:
-            printClients(clientList)
-            clientId = int(input("Client: "))
-            command = input("Command: ")
-            network.socket.sendto(command.encode('UTF-8'),clientList[clientId-1])
+        try:
+            clientList = recv.getClients()
+            if len(clientList) == 0:
+                print('No Clients')
+                time.sleep(5)
+            else:
+                clientId = 0
+                if len(clientList) != 1:
+                    printClients(clientList)
+                    clientId = int(input("Client: "))
+                command = input("Command: ")
+                network.socket.sendto(command.encode('UTF-8'),clientList[clientId-1])
+        except Exception as e:
+            pass
 
 
 

