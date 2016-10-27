@@ -27,9 +27,9 @@ def prepare(index, message_id, text, lastMessage=False):
 
 # Some basic code to echo the packet back, then
 #def receive(messageBytes):
-     message = zlib.decompress(messageBytes)
-     message = message.decode('utf-8')
-     message = json.loads(message)
+     #message = zlib.decompress(messageBytes)
+     #message = message.decode('utf-8')
+     #message = json.loads(message)
     # for m in myList:
     #     if m['index'] == message['index']:
     #         receivetime = time.time()
