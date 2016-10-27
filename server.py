@@ -25,15 +25,38 @@ class Network:
         self.socket.bind((socket.gethostbyname('0.0.0.0'),port))
 
 class ProcessingThread(threading.Thread):
-
+    
     def __init__(self):
         super().__init__()
-
+    
     def run(self):
         while True:
             for key, value in cache.items():
-                pass
-            time.sleep(1)
+                print('here is the message comes from ' + key)
+                messagetem = {}
+                for i in range (len(value['messageQueue'])):
+                    msgId = value['messageQueue'][i]['message_id']
+                    if msgId not in messagetem:
+                        messagetem[msgId] = []
+                    messagetem[value['messageQueue'][i]['message_id']].append( {
+                        "index": value['messageQueue'][i]['index'],
+                        "data": value['messageQueue'][i]['data']
+                    })
+                for key, value in messagetem.items():
+                    indexMax = 0
+                    for i in range (len(value)):
+                        indexMax = max(value['index'], indexMax)
+                    messStr = [None for x in range(indexMax)]
+                    for i in range (len(value)):
+                        messStr[value['index']]= value['data']
+                    for i in range (len(messStr)):
+                        if (messStr[i]):
+                            print (messStr[i])
+                        else:
+                            print('we lost this message')
+    
+    
+        time.sleep(1)
 
 
 
