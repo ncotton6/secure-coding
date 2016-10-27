@@ -16,7 +16,7 @@ def prepare(index, message_id, text, lastMessage=False):
         "lastMessage":lastMessage
     }
 
-    myList.append(message)
+    #myList.append(message)
     message = json.dumps(message).encode('utf-8')
     message = zlib.compress(message)
     #op('udpout_from_master').sendBytes(message)
