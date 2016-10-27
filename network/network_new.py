@@ -31,7 +31,7 @@ def prepare(index, message_id, text, lastMessage=False):
      #message = message.decode('utf-8')
      #message = json.loads(message)
     # for m in myList:
-    #     if m['index'] == message['index']:
-    #         receivetime = time.time()
-    #         roundtrip = receivetime - message['senttime']
-    #         op('table1').appendRow(['compress', roundtrip])
+         if m['index'] == message['index']:
+             receivetime = time.time()
+             roundtrip = receivetime - message['senttime']
+             op('table1').appendRow(['compress', roundtrip])
