@@ -1,6 +1,6 @@
 import socket
 import zlib
-from network.network_new import prepare
+import json
 
 """
 
@@ -70,3 +70,25 @@ def getSendTo():
 
 def getMessageLimit():
     return 500
+
+def prepare(index, message_id, text, lastMessage=False):
+    """
+    In order to create message to send across the network a number
+    of peices of metadata need to be attached to the message.  This
+    metadata is then used at the other endpoint to reconstruct the
+    message.
+    :param index:
+    :param message_id:
+    :param text:
+    :param lastMessage:
+    :return:
+    """
+    message = {
+        "data": text,
+        "index": index,
+        "message_id":message_id,
+        "lastMessage":lastMessage
+    }
+    message = json.dumps(message).encode('utf-8')
+    message = zlib.compress(message)
+    return message
