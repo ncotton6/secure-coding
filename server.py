@@ -29,18 +29,21 @@ class ProcessingThread(threading.Thread):
                 for i in range(len(value['messageQueue'])):
                     msgId = value['messageQueue'][i]['message_id']
                     if msgId not in messagetem:
-                        messagetem[msgId] = []
-                    messagetem[value['messageQueue'][i]['message_id']].append({
+                        messagetem[msgId] =
+                        {
                         "index": value['messageQueue'][i]['index'],
                         "data": value['messageQueue'][i]['data']
-                    })
+                        }
+                    else{
+                    messagetem[value['messageQueue'][i]['message_id']].append(value['messageQueue'][i]['data'])
+                    }
                 for key, value in messagetem.items():
-                    indexMax = 0git
-                    for i in range(len(value)):
-                        indexMax = max(value['index'], indexMax)
+                    indexMax = 0
+                    for i in range(len(value['data'])):
+                        indexMax = max(value['index'][i], indexMax)
                     messStr = [None for x in range(indexMax)]
                     for i in range(len(value)):
-                        messStr[value['index']] = value['data']
+                        messStr[value['index'][i]] = value['data']
                     for i in range(len(messStr)):
                         if (messStr[i]):
                             print(messStr[i])
