@@ -35,7 +35,7 @@ class ProcessingThread(threading.Thread):
                         "data": value['messageQueue'][i]['data']
                     })
                 for key, value in messagetem.items():
-                    indexMax = 0git
+                    indexMax = 0
                     for i in range(len(value)):
                         indexMax = max(value['index'], indexMax)
                     messStr = [None for x in range(indexMax)]
