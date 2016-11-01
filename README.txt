@@ -28,6 +28,7 @@ to rootkit automatically.
 Structure:
 
 rootkit.py                       : entry point
+server.py                        : server for communicating with the client
 install.bat                      : windows installation
 install.sh                       : linux installation
 network/
