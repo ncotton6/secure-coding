@@ -8,6 +8,7 @@ import json
 __author__ = 'Nathaniel Cotton, Zhao Hongyu'
 
 cache = {}
+file = open('loggedInfo.txt','w')
 
 
 class Network:
@@ -23,33 +24,24 @@ class ProcessingThread(threading.Thread):
 
     def run(self):
         while True:
-            for key, value in cache.items():
-                print('here is the message comes from ' + str(key))
-                messagetem = {}
-                for i in range(len(value['messageQueue'])):
-                    msgId = value['messageQueue'][i]['message_id']
-                    if msgId not in messagetem:
-                        messagetem[msgId] =
-                        {
-                        "index": value['messageQueue'][i]['index'],
-                        "data": value['messageQueue'][i]['data']
-                        }
-                    else{
-                    messagetem[value['messageQueue'][i]['message_id']].append(value['messageQueue'][i]['data'])
-                    }
-                for key, value in messagetem.items():
-                    indexMax = 0
-                    for i in range(len(value['data'])):
-                        indexMax = max(value['index'][i], indexMax)
-                    messStr = [None for x in range(indexMax)]
-                    for i in range(len(value)):
-                        messStr[value['index'][i]] = value['data']
-                    for i in range(len(messStr)):
-                        if (messStr[i]):
-                            print(messStr[i])
-                        else:
-                            print('we lost this message')
+            for addr, value in cache.items():
+                toPop = []
+                map = value['messageMap']
+                for messageID, queue in map.items():
+                    self.printMessageResult(addr,messageID,queue)
+                    toPop.append(messageID)
+                for m in toPop:
+                    map.pop(m)
             time.sleep(1)
+
+    def printMessageResult(self, addr, messageID, queue):
+        data = ''
+        sortedQueue = sorted(queue,key=lambda k:k['index'])
+        for msg in sortedQueue:
+            data += msg['data']
+        #print('{} : {}'.format(str(addr),data))
+        file.write('{} : {}\n'.format(str(addr),data))
+        file.flush()
 
 
 class Recv(threading.Thread):
@@ -70,15 +62,17 @@ class Recv(threading.Thread):
             if addr not in cache:
                 cache[addr] = {
                     "lastRecv": datetime.datetime.now(),
-                    "messageQueue": [data]
+                    "messageMap" : {
+                        data['message_id'] : [data]
+                    }
                 }
             else:
                 cache[addr]["lastRecv"] = datetime.datetime.now()
-                cache[addr]["messageQueue"].append(data)
-                # self.addr = addr
-                # data = zlib.decompress(data)
-                # self.lastRecvTime = datetime.datetime.now()
-                # print(data)
+                map = cache[addr]['messageMap']
+                if data['message_id'] in map:
+                    map[data['message_id']].append(data)
+                else:
+                    map[data['message_id']] = [data]
 
     def getClients(self):
         self.purge()
