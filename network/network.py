@@ -3,7 +3,8 @@ import zlib
 import json
 
 """
-
+A simple module that provides two main functions one for sending data from endpoint
+to endpoint using a UDP socket, and to receive data from endpoint to endpoint.
 """
 
 __author__ = "Nathaniel Cotton, Hongyu Zhao"
@@ -11,6 +12,10 @@ __email__ = "nec2887@rit.edu, hz1242@g.rit.edu"
 
 
 class NetUtil:
+    """
+    Singleton class that will be used so that only one UDP socket will
+    ever be instantiated.
+    """
     __slots__ = ['netutil']
 
     class __NetUtil:
@@ -66,9 +71,17 @@ def recv():
 
 
 def getSendTo():
+    """
+    Gets the location to which it should send data
+    :return:
+    """
     return ('localhost', 5005) #use ifconfig to get the current ipv4 address then use that for our target address no localhost
 
 def getMessageLimit():
+    """
+    Gets the maximum message size
+    :return:
+    """
     return 500
 
 def prepare(index, message_id, text, lastMessage=False):
