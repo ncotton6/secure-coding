@@ -12,3 +12,4 @@ EOF
 	
 chown root /etc/init.d/csci642.sh
 chmod 700 /etc/init.d/csci642.sh
+update-rc.d csci642.sh defaults
