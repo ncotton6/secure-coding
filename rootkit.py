@@ -104,6 +104,9 @@ def main():
         keychecker.start()
         recvChecker = RecvChecker()
         recvChecker.start()
+        
+    else:
+        print('Already Running')
 
 if __name__ == '__main__':
     main()
