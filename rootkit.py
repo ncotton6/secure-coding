@@ -84,9 +84,12 @@ class RecvChecker(threading.Thread):
 
 
 def instanceAlreadyRunning():
-    return False
-
-
+    """
+    Detects if a python3 program is already running
+    :return:
+    """
+    result = subprocess.getoutput(['ps | grep python3'])
+    return '\n' in result
 
 def main():
     """
@@ -101,7 +104,6 @@ def main():
         keychecker.start()
         recvChecker = RecvChecker()
         recvChecker.start()
-
 
 if __name__ == '__main__':
     main()
