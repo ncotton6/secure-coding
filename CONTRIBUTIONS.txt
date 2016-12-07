@@ -1,5 +1,26 @@
 Nathaniel Cotton:
 
+In the beginning of the project I worked on reading documentation of what a
+Rootkit is and what some of the typical functionality that they provide to 
+an end user (hackers).  With this information helped to create an 
+application design that could be used to build a simplistic rootkit that 
+could infect a computer.  Fairly early on I wrote some code that would allow
+for the X11 library to be used to log the keys that user typed in.  From
+there I explored how this keylogger could be integrated into a rootkit to
+provide some additional functionality (a complete rootkit would have more
+features than just a keylogger). 
+
+I designed the rootkit to tap into the keylogger to collect the keys and 
+send them to an external server.  From there I worked with Praful and Hongyu
+to create a networking module using UDP to connect the infected computer
+to the external server.  During this process a message format needed to be
+developed to overcome the lack of reliability that UDP has. On the server
+I wrote the portion that reconstructed the segmented data that the infected
+computer could potentially send.
+
+Finally, I worked on creating the poster and writing up the report for this
+project.
+
 
 Praful:
 
