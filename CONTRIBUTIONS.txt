@@ -26,3 +26,21 @@ Praful:
 
 Hongyu Zhao:
 
+In the beginning of the project, I worked on the reading documentation of the 
+implementation of keylogger and shared the website with Nate and Praful. Since 
+Nate's X11 keylogger function couldn't work in windows, I wrote a keylistener 
+function in Java. But we decided to abandon that function.
+
+Then I talked with Praful decided to build the network function by UDP. I blinded the 
+port and used the static server address to build the connection between the server and 
+client. And I created the sending function in the client and the replying function in the
+server to make sure the cilent would be able to send the information any time and the 
+server would be able to reply the information to control the client performance each time.
+Considering about the mult-clients, we decided to re-build the message format. According 
+to praful's message format, I re-built the sending message part. However it didn't work 
+well, so Nate had to re-built that again.
+
+Finally, I worked on adding information for the poster and writing up the report for
+this project.
+
+
