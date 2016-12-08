@@ -32,8 +32,8 @@ Coming to the Network functionality part of the project, we were initially brain
 what kind of protocol we would be using for your network model. We went with UDP. I initially coded 
 up the network infrastructure (both client and server) as UDP packets are exchanged. This code was later
 modified by Nate to fit it in our project. 
-I came up with a design for the message object(more like a json object) and coded up the portion and linked it to
-the networking portion. The reason for this design idea was to overcome the shortcomings that came along with
+I came up with a design for the message object(more like a json object) and coded up the portion.
+The reason for this design idea was to overcome the shortcomings that came along with
 picking UDP over TCP as a protocol (We had to make sure we weren't losing any packets). Using this feature we
 could keep track of all the messages leaving the client to the server and vice versa.
 
